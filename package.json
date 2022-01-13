@@ -1,0 +1,21 @@
+{
+  "name": "levtech_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "sasasasa1124",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/webhook": "^6.0.0",
+    "config": "^3.3.7",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "google-spreadsheet": "^3.2.0",
+    "googleapis": "^92.0.0",
+    "path": "^0.12.7"
+  },
+  "description": ""
+}

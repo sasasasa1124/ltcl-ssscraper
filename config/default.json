@@ -1,0 +1,47 @@
+{
+    "slack":{
+        "test_url" : "https://hooks.slack.com/services/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",
+        "key_url" : "https://hooks.slack.com/services/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",
+        "self_study_url" : "https://hooks.slack.com/services/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"
+    },
+    "name_id_table" : {
+        "石川　裕太" : "U01K2Q9H96W",
+        "小山　智暉" : "U01K8V4ATTN",
+        "橋本　愛鈴" : "U01RYLSP4LB",
+        "内藤　翔太" : "U01RYMXP7AP",
+        "山本　万里恵" : "U01V11LG684",
+        "笹本　康太" : "U01UE3E8HD5",
+        "高山　伶" : "U02172BEGD8",
+        "四宮　和真" : "U021VH9NX1P",
+        "石井　翔" : "U025F0HKAHE",
+        "豊田　健悟" : "U02501U402J",
+        "松岡　里穂" : "U02LESNJUKX",
+        "清水　湧貴" : "U02KNBLDX7F",
+        "柴　英嗣" : "U02KJL94J6A"
+    },
+    "name_table":
+    [
+        "石川　裕太",
+        "小山　智暉",
+        "橋本　愛鈴",
+        "内藤　翔太",
+        "山本　万里恵",
+        "笹本　康太",
+        "高山　伶",
+        "四宮　和真",
+        "石井　翔",
+        "豊田　健悟",
+        "松岡　里穂",
+        "清水　湧貴",
+        "柴　英嗣"
+    ],
+    "spreadsheet" : {
+        "id" : "19IF7VHXA-_JNcKJOd9WQN9Hm-SjuZ3CMtLysVpE9nYg",
+        "url" : "https://docs.google.com/spreadsheets/d/1-Rdn9b--9e2lNH25KWILFOXkupQyBDbYbm_ivNbmMHc/edit#gid=1233617326",
+        "headerRow" : 0,
+        "keyNames": ["鍵1","鍵2","鍵3"]
+    },
+    "sites" : {
+        "url": "https://levtech-management.herokuapp.com/"
+    }
+}
