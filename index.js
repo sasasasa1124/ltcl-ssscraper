@@ -1,7 +1,7 @@
 // import modules;
 const utils = require('./utils');
 const express = require("express");
-const {google, appengine_v1alpha} = require("googleapis");
+const { google } = require("googleapis");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
@@ -16,22 +16,19 @@ const auth = new google.auth.GoogleAuth({
     scopes:"https://www.googleapis.com/auth/spreadsheets",
 });
 
-const spreadsheetsId = conf.spreadsheet.id;
+const spreadsheetsId = process.env.SPREADSHEET_ID;
 const doc = new GoogleSpreadsheet(spreadsheetsId);
 
 // slack reminder initialization;
 const { IncomingWebhook } = require('@slack/webhook');
-const key_webhook = new IncomingWebhook(conf.slack.key_url);
-const self_study_webhook = new IncomingWebhook(conf.slack.self_study_url);
+const key_webhook = new IncomingWebhook(process.env.SLACK_KEY_HOOK);
+const self_study_webhook = new IncomingWebhook(process.env.SLACK_SELF_STUDY_HOOK);
 
 // express initialization;
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static(__dirname + '../client/public'));
-
-app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get("/api/create", async (req,res) => {
     await doc.useServiceAccountAuth(cred);
@@ -153,99 +150,8 @@ app.get("/api/self_study", async (req,res) => {
     }
 );
 
-// get schedule for current month lists for searched mentor
-app.get("/api/mentor/:mentorName", async (req, res) => {    
-    const today = datetimeToArray(new Date());
-    const mentor = req.params.mentorName;
-    const row = await googleSheets.spreadsheets.values.batchGet({
-        auth: auth,
-        spreadsheetId: spreadsheetsId,
-        ranges: [`${todayObject.getFullYear()}年${todayObject.getMonth() + 1}月!B12:AG12`,`${todayObject.getFullYear()}年${todayObject.getMonth() + 1}月!B${await nameToRow(mentor)}:AG${await nameToRow(mentor)}`]
-    });
-    rawArrays = row.data.valueRanges.map(obj => obj.values[0]);
-    console.log(rawArrays);
-    // transpose arrays
-    arrays = rawArrays[0].map((col,i) => rawArrays.map(row => row[i]));
-    console.log(arrays);
-    const dateRegex = /\d{1,2}:\d{2}/g;
-    var response = []
-    arrays.forEach((array) => {
-        console.log(array);
-        // what is this ... imply in javascript;
-        if (array[1] !== undefined) {
-            if (array[1].search(dateRegex) != -1) {
-                times = [...array[1].matchAll(dateRegex)];
-                console.log(times);
-                var line = {
-                    "title": `${times[0][0]}-${times[times.length-1][0]}`,
-                    "allDay": false,
-                    "start": new Date([todayObject.getFullYear(),array[0],times[0][0],'+09:00'].join(' ')),
-                    "end": new Date([todayObject.getFullYear(),array[0],times[times.length-1][0],'+09:00'].join(' '))
-                };
-                response.push(line);
-            }
-        }
-        else {
-            console.log(`error @${array}`);
-        }
-    });
-    console.log(response);
-    res.send(response);
-});
-
-
-app.get("/api/date/:date", async (req, res) => {
-    // dateObj contains 1:year, 2:month, 3:date
-    const dateObj = new Date(req.params.date);
-    const client = await auth.getClient();
-    const googleSheets = google.sheets({version:"v4", auth:client});
-    console.log(dateObj);
-    const row = await googleSheets.spreadsheets.values.batchGet({
-        auth: auth,
-        spreadsheetId: spreadsheetsId,
-        ranges: [
-            `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月!B16:B27`,
-            `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月!${dayToColumn(dateObj.getDate())}16:${dayToColumn(dateObj.getDate())}27`,
-        ]
-    });
-    rawArrays = row.data.valueRanges.map(obj => obj.values);
-    // transpose arrays
-    arrays = rawArrays[0].map((col,i) => rawArrays.map(row => row[i]));
-    const dateRegex = /\d{1,2}:\d{2}/g;
-    var response = []
-    arrays.forEach((array) => {
-        console.log(array);
-        // what is this ... imply in javascript;
-        try {
-            if (array[1]) {
-                rawTimeString = new String(array[1]);
-                if (rawTimeString.search(dateRegex) > -1) {
-                    times = [...rawTimeString.matchAll(dateRegex)];
-                    console.log(times);
-                    var line = {
-                        "title": (array[0][0]) + ((rawTimeString.slice(0,1) == '*') ? '(オンライン)' : ''),
-                        "allDay": false,
-                        "start": new Date([dateObj.getFullYear(),dateObj.getMonth()+1,dateObj.getDate(),times[0][0],'+09:00'].join(' ')),
-                        "end": new Date([dateObj.getFullYear(),dateObj.getMonth()+1,dateObj.getDate(),times[times.length-1][0],'+09:00'].join(' '))
-                    };
-                    response.push(line);;
-                }
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
-    });
-    console.log(response);
-    res.send(response);
-})
-
-
-
-
-
 app.get('*',(req,res) => {
-    res.sendFile(path.join(__dirname,'../client/build/index.html'));
+    res.send('there is no corresponding API...');
 });
 
 app.listen(PORT,(req, res) => console.log(`server listening on ${PORT}`));

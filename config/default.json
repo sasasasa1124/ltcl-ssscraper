@@ -1,9 +1,5 @@
 {
-    "slack":{
-        "test_url" : "https://hooks.slack.com/services/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",
-        "key_url" : "https://hooks.slack.com/services/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",
-        "self_study_url" : "https://hooks.slack.com/services/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"
-    },
+
     "name_id_table" : {
         "石川　裕太" : "U01K2Q9H96W",
         "小山　智暉" : "U01K8V4ATTN",
@@ -36,12 +32,7 @@
         "柴　英嗣"
     ],
     "spreadsheet" : {
-        "id" : "19IF7VHXA-_JNcKJOd9WQN9Hm-SjuZ3CMtLysVpE9nYg",
-        "url" : "https://docs.google.com/spreadsheets/d/1-Rdn9b--9e2lNH25KWILFOXkupQyBDbYbm_ivNbmMHc/edit#gid=1233617326",
         "headerRow" : 0,
         "keyNames": ["鍵1","鍵2","鍵3"]
-    },
-    "sites" : {
-        "url": "https://levtech-management.herokuapp.com/"
     }
 }
