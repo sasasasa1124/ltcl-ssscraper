@@ -33,13 +33,13 @@ app.use(express.json());
 app.get("/api/create", async (req,res) => {
     await doc.useServiceAccountAuth(cred);
     await doc.loadInfo();
-    const today = utils.today;
+    const today = utils.tommorow;
     const isCreated = (typeof doc.sheetsByTitle[`${today['year']}年${today['month']}月`] !== 'undefined');
     const sheet = (isCreated ? doc.sheetsByTitle[`${today['year']}年${today['month']}月`] : await doc.addSheet({'title' : `${today['year']}年${today['month']}月`}));
     await sheet.loadCells('A1:A10');
     console.log(sheet.cellStats);
     const firstCell = sheet.getCell(0,0);
-    firstCell.formula = `=IMPORTRANGE("1-Rdn9b--9e2lNH25KWILFOXkupQyBDbYbm_ivNbmMHc/edit#gid=1731820269","${today['year']}年${today['month']}月!A1:AK50")`
+    firstCell.formula = `=IMPORTRANGE("${process.env.SPREADSHEET_URL}","${today['year']}年${today['month']}月!A1:AK50")`
     await sheet.saveUpdatedCells();
     res.send(sheet.title);
 });
