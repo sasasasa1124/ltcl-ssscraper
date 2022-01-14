@@ -7,11 +7,12 @@ const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 var conf = require('config');
 const path = require('path');
+// require('dotenv').config();
 const cred = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 // google API and spreadsheet initialization;
 const auth = new google.auth.GoogleAuth({
-    keyFile: cred,
+    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     scopes:"https://www.googleapis.com/auth/spreadsheets",
 });
 
